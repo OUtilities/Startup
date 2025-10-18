@@ -1,1 +1,1 @@
-start "" "C:\_Olo\Quick.Startup.Utilities\Quick.Startup.Utilities.sln"
+start "" "C:\_PetProjects\OUtilities\Startup\src\Quick.Startup.Utilities\Quick.Startup.Utilities.sln"
