@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command=":: Create the target directory if it doesn't exist&#xA;if not exist &quot;C:\_LocalTools&quot; mkdir &quot;C:\_LocalTools&quot;&#xA;&#xA;:: Copy all build output files to C:\_LocalTools&#xA;xcopy /Y /E /I &quot;$(TargetDir)*&quot; &quot;C:\_LocalTools\&quot;&#xA;&#xA;:: Rename the EXE to ogitb.exe&#xA;if exist &quot;C:\_LocalTools\O.exe&quot; ren &quot;C:\_LocalTools\Git.Utility.exe&quot; &quot;o.exe&quot;&#xA;&#xA;:: Optionally add C:\_LocalTools to the user PATH if not already present&#xA;powershell -Command &quot;if (-not ($env:Path -split ';' | ? { $_ -eq 'C:\_LocalTools' })) { [Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\_LocalTools', 'User') }&quot;" />
+	</Target>
+	<ItemGroup>
+	  <ProjectReference Include="..\BlackScreen\BlackScreen.csproj" />
+	  <ProjectReference Include="..\Git.Extentions.Utility\Git.Extentions.Utility.csproj" />
+	  <ProjectReference Include="..\Git.Utility\Git.Utility.csproj" />
+	  <ProjectReference Include="..\Vs2022.Utility\Vs2022.Utility.csproj" />
+	</ItemGroup>
+</Project>
