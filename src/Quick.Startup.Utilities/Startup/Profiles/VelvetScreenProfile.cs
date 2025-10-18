@@ -34,6 +34,7 @@ namespace Startup.Profiles
             batFileExecutor.Run("NotepadPlusPlus.bat");
             batFileExecutor.Run("Postman.bat");
             batFileExecutor.Run("Gemini.bat");
+            batFileExecutor.Run("PowerShell.bat", runAsAdmin: true);
         }
     }
 }
