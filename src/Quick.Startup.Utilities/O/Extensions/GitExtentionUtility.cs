@@ -88,6 +88,15 @@ Commands:
                 string newBranchName = args[1];
                 RunGitCommands(new[] { $"git checkout -b {newBranchName}" });
                 break;
+            case "cm":
+                if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
+                {
+                    Console.WriteLine("Usage: o g cm <message>");
+                    return;
+                }
+                string message = args[1];
+                RunGitCommands(new[] { $"git commit -m \"{message}\"" });
+                break;
             case "pf":
                 if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
                 {
