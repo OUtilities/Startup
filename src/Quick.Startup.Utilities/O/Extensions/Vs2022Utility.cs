@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Vs2022.Utility;
+namespace O.Extensions;
 
 public class Vs2022Utility
 {

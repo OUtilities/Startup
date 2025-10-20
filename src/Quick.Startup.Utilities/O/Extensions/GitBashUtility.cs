@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Git.Utility;
+namespace O.Extensions;
 
 public class GitBashUtility
 {
