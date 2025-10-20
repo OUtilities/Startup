@@ -1,4 +1,4 @@
 ﻿using O.Profiles;
 
-IProfile profile = new Profile1();
+IProfile profile = new VelvetScreenProfile();
 await profile.Startup();

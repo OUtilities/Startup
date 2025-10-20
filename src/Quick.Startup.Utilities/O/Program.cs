@@ -6,9 +6,10 @@ using O.Profiles;
 
 class Program
 {
+    private static readonly IProfile profile = new VelvetScreenProfile();
+
     static void Main(string[] args)
     {
-        IProfile profile = new Profile1();
         if (args.Length == 0)
         {
             // Add other command handling or default behavior here
