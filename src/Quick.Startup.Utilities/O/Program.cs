@@ -1,10 +1,8 @@
 ﻿namespace O;
 
 using BlackScreen;
-using Git.Extentions.Utility;
-using Git.Utility;
+using O.Extensions;
 using O.Profiles;
-using Vs2022.Utility;
 
 class Program
 {

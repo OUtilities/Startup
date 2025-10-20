@@ -1,4 +1,6 @@
-﻿namespace O.Profiles;
+﻿using Common.Utils;
+
+namespace O.Profiles;
 
 // VelvetScreen
 internal class VelvetScreenProfile : IProfile
@@ -22,6 +24,33 @@ internal class VelvetScreenProfile : IProfile
                 { "vui", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
                 { "vapi", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
             };
+    }
+
+    private BatFileExecutor batFileExecutor = new BatFileExecutor();
+    private PowerShellExecutor powerShellExecutor = new PowerShellExecutor();
+    public async Task Startup()
+    {
+        RunBatFiles();
+        RunPowershelCommands();
+
+        await Task.Delay(10 * 1000); // Wait some time to let commands finish
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo start", PowerShellMode.LeaveOpen);
+    }
+
+    private void RunPowershelCommands()
+    {
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
+    }
+
+    private void RunBatFiles()
+    {
+        batFileExecutor.Run("Chrome.bat");
+        batFileExecutor.Run("Telegram.bat");
+        batFileExecutor.Run("NotepadPlusPlus.bat");
+        batFileExecutor.Run("Postman.bat");
+        batFileExecutor.Run("Gemini.bat");
+        batFileExecutor.Run("PowerShell.bat", runAsAdmin: true);
     }
 }
 

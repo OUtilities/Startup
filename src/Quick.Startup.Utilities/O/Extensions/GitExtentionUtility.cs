@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Git.Extentions.Utility;
+namespace O.Extensions;
 
 public class GitExtentionUtility
 {
