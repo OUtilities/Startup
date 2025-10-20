@@ -2,8 +2,7 @@
 
 namespace O.Profiles;
 
-// OLO
-public class Profile1 : IProfile
+public class OloProfile : IProfile
 {
     private BatFileExecutor batFileExecutor = new BatFileExecutor();
     private PowerShellExecutor powerShellExecutor = new PowerShellExecutor();

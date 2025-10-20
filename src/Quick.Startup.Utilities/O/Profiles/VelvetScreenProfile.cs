@@ -2,8 +2,7 @@
 
 namespace O.Profiles;
 
-// VelvetScreen
-internal class VelvetScreenProfile : IProfile
+public class VelvetScreenProfile : IProfile
 {
     public Dictionary<string, string> GetRepoMappings()
     {
@@ -33,14 +32,14 @@ internal class VelvetScreenProfile : IProfile
         RunBatFiles();
         RunPowershelCommands();
 
-        await Task.Delay(10 * 1000); // Wait some time to let commands finish
-        powerShellExecutor.RunPowerShellCommandAsAdmin("olo start", PowerShellMode.LeaveOpen);
+        //await Task.Delay(10 * 1000); // Wait some time to let commands finish
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("olo start", PowerShellMode.LeaveOpen);
     }
 
     private void RunPowershelCommands()
     {
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
     }
 
     private void RunBatFiles()
