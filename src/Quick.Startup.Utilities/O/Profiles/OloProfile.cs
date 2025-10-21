@@ -10,6 +10,8 @@ public class OloProfile : IProfile
     {
         return new()
             {
+                { "utils", @"C:\_PetProjects\OUtilities\Startup" },
+
                 { "platform", @"C:\code\platform" },
                 { "mapi", @"C:\code\menu-api" },
                 { "imageapi", @"C:\code\image-api" },

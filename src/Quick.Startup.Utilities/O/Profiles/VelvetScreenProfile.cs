@@ -9,6 +9,7 @@ public class VelvetScreenProfile : IProfile
         return new()
             {
                 { "utils", @"C:\_PetProjects\OUtilities\Startup" },
+
                 { "vui", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
                 { "vapi", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
             };

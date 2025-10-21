@@ -6,7 +6,7 @@ using O.Profiles;
 
 class Program
 {
-    private static readonly IProfile profile = new VelvetScreenProfile();
+    private static readonly IProfile profile = new OloProfile();
 
     static void Main(string[] args)
     {
