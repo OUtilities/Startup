@@ -22,13 +22,16 @@ public class OloProfile : IProfile
     {
         return new()
             {
-                { "startup", @"C:\_Olo\Quick.Startup.Utilities\Quick.Startup.Utilities.sln" },
+            
+                { "utils", @"C:\_PetProjects\OUtilities\Startup\src\Quick.Startup.Utilities\Quick.Startup.Utilities.sln" },
 
                 { "serve", @"C:\code\platform\MobileWeb\MobileWeb.sln" },
                 { "menu", @"C:\code\platform\Olo.Menus\Olo.Menus.sln" },
                 { "menulogic", @"C:\code\platform\MenuLogic\Mobo.MenuLogic.sln" },
+                { "menuadmin", @"C:\code\platform\MenuAdmin\MenuAdmin.sln" },
                 { "dashboard", @"C:\code\platform\Dashboard\Dashboard.sln" },
                 { "mobologic", @"C:\code\platform\MoboLogic\MoboLogic.sln" },
+                { "mes", @"C:\code\platform\Olo.Menus.Export\Olo.Menus.Export.sln" },
                 { "elastic", @"C:\code\platform\MenuSearchIndexingService\MenuSearchIndexingService.sln" },
 
                 { "imageapi", @"C:\code\image-api\ImageApi.sln" },
@@ -51,6 +54,20 @@ public class OloProfile : IProfile
         // olo db sync
         // olo ff - Fast-forward cloned repositories registered in builder.json
         // olo aws localdev
+        // olo consul update Local
+        // dotnet tool update -g olo-builder
+
+        // cd C:\code\platform\Admin\src
+        // npm i
+        // olo build Admin
+        // cd C:\code\platform\Dashboard\src
+        // npm i
+        // olo build Dashboard
+        // olo build MenuAdmin
+        // olo build MobileWeb
+        // cd C:\code\platform\CallCenter\src
+        // npm i
+        // olo build CallCenter
     }
 
     private void RunPowershelCommands()

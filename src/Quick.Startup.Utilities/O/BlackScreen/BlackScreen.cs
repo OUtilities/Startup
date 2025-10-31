@@ -7,6 +7,6 @@ public class BlackScreen
     public void Run()
     {
         var batFileExecutor = new BatFileExecutor();
-        batFileExecutor.Run("BlackScreen.bat", "");
+        batFileExecutor.Run("BlackScreen.bat", "BlackScreen");
     }
 }

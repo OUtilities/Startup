@@ -19,7 +19,7 @@ public class VelvetScreenProfile : IProfile
     {
         return new()
             {
-                { "startup", @"C:\_Olo\Quick.Startup.Utilities\Quick.Startup.Utilities.sln" },
+                { "utils", @"C:\_PetProjects\OUtilities\Startup\src\Quick.Startup.Utilities\Quick.Startup.Utilities.sln" },
 
                 { "vui", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
                 { "vapi", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
@@ -41,6 +41,8 @@ public class VelvetScreenProfile : IProfile
     {
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb utils", PowerShellMode.CloseInTheEnd);
+
     }
 
     private void RunBatFiles()
