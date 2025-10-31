@@ -1,1 +1,1 @@
-start /max "" "C:\_LocalTools\black-screen_39.png"
+start /max "" "C:\_LocalTools\BlackScreen\black-screen_39.png"
