@@ -4,89 +4,65 @@ namespace O.Extensions;
 
 public class GitExtentionUtility
 {
+    private string[] allowedBranches = { "master", "main", "develop" };
     public void Run(string[] args)
     {
         if (args.Length == 0)
         {
             Console.WriteLine(
-@"Usage: o g <command> [branch_name]
+                @"Usage: o g <command> [branch_name]
 
-Commands:
-  p                git pull origin <current_branch> (only on master, main, develop)
-  r <branch_name>  git rebase <branch_name>
-  ri <branch_name> git rebase -i <branch_name>
-  s                git stash
-  sp               git stash pop
-  c <branch_name>  git checkout <branch_name>
-  cb <branch_name> git checkout -b <branch_name>
-  pf <branch_name> git push --force origin <branch_name>
-"
+                Commands:
+                  p                git pull origin <current_branch> (only on master, main, develop)
+                  r <branch_name>  git rebase <branch_name>
+                  ri <branch_name> git rebase -i <branch_name>
+                  s                git stash
+                  sp               git stash pop
+                  c <branch_name>  git checkout <branch_name>
+                  cb <branch_name> git checkout -b <branch_name>
+                  pf <branch_name> git push --force origin <branch_name>
+                "
             );
             return;
         }
 
         string command = args[0].ToLower();
-
+        string branchName = GetBranchName(args);
         switch (command)
         {
-            case "p":
-                string branchP = args[1];
-                if (branchP == null)
+            case "p":               
+                if (!this.allowedBranches.Any(b => branchName.Equals(b, StringComparison.OrdinalIgnoreCase)))
                 {
-                    Console.WriteLine("Could not determine current branch.");
+                    Console.WriteLine($"Current branch is '{branchName}'. 'o g p' can only be run on the following branches: {string.Join(", ", this.allowedBranches)}.");
                     return;
                 }
-                string[] allowedBranches = { "master", "main", "develop" };
-                if (!allowedBranches.Any(b => branchP.Equals(b, StringComparison.OrdinalIgnoreCase)))
-                {
-                    Console.WriteLine($"Current branch is '{branchP}'. 'o g p' can only be run on the following branches: {string.Join(", ", allowedBranches)}.");
-                    return;
-                }
-                RunGitCommands(new[] { $"git pull origin {branchP}" });
+                RunGitCommands(new[] { $"git pull origin {branchName}" });
                 break;
             case "r":
-                if (args.Length > 1 && !string.IsNullOrWhiteSpace(args[1]))
+                if (!this.allowedBranches.Any(b => branchName.Equals(b, StringComparison.OrdinalIgnoreCase)))
                 {
-                    string rebaseBranchName = args[1];
-                    RunGitCommands(new[] { $"git rebase {rebaseBranchName}" });
+                    Console.WriteLine($"Current branch is '{branchName}'. 'o g p' can only be run on the following branches: {string.Join(", ", this.allowedBranches)}.");
+                    return;
                 }
-                else
-                {
-                    Console.WriteLine("Usage: o g r <branch_name>");
-                }
+                RunGitCommands(new[] { $"git rebase {branchName}" });
                 break;
             case "ri":
-                if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
+                if (!this.allowedBranches.Any(b => branchName.Equals(b, StringComparison.OrdinalIgnoreCase)))
                 {
-                    Console.WriteLine("Usage: o g ri <branch_name>");
+                    Console.WriteLine($"Current branch is '{branchName}'. 'o g p' can only be run on the following branches: {string.Join(", ", this.allowedBranches)}.");
                     return;
                 }
-                string interactiveBranchName = args[1];
-                RunGitCommands(new[] { $"git rebase -i {interactiveBranchName}" });
+                RunGitCommands(new[] { $"git rebase {branchName}" });
+                RunGitCommands(new[] { $"git rebase -i {branchName}" });
                 break;
-            case "s":
-                RunGitCommands(new[] { "git stash" });
-                break;
-            case "sp":
-                RunGitCommands(new[] { "git stash pop" });
+            case "pf":
+                RunGitCommands(new[] { $"git push --force origin {branchName}" });
                 break;
             case "c":
-                if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
-                {
-                    Console.WriteLine("Usage: o g c <branch_name>");
-                    return;
-                }
-                string branchName = args[1];
                 RunGitCommands(new[] { $"git checkout {branchName}" });
                 break;
             case "cb":
-                if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
-                {
-                    Console.WriteLine("Usage: o g cb <branch_name>");
-                    return;
-                }
-                string newBranchName = args[1];
-                RunGitCommands(new[] { $"git checkout -b {newBranchName}" });
+                RunGitCommands(new[] { $"git checkout -b {branchName}" });
                 break;
             case "cm":
                 if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
@@ -97,19 +73,39 @@ Commands:
                 string message = args[1];
                 RunGitCommands(new[] { $"git commit -m \"{message}\"" });
                 break;
-            case "pf":
-                if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
-                {
-                    Console.WriteLine("Usage: o g pf <branch_name>");
-                    return;
-                }
-                string forceBranchName = args[1];
-                RunGitCommands(new[] { $"git push --force origin {forceBranchName}" });
+            case "s":
+                RunGitCommands(new[] { "git stash" });
+                break;
+            case "sp":
+                RunGitCommands(new[] { "git stash pop" });
                 break;
             default:
                 Console.WriteLine("Unknown command. Use 'o g p', 'o g r [branch_name]', 'o g ri <branch_name>', 'o g s', 'o g sp', 'o g c <branch_name>', 'o g cb <branch_name>', or 'o g pf <branch_name>'.");
                 break;
         }
+    }
+
+    private static string GetBranchName(string[] args)
+    {
+        if (args.Length < 2 || string.IsNullOrWhiteSpace(args[1]))
+        {
+            return null;
+        }
+        string branchP = args[1].ToLower();
+        if (branchP == "d")
+        {
+            branchP = "develop";
+        }
+        if (branchP == "ms")
+        {
+            branchP = "master";
+        }
+        if (branchP == "mn")
+        {
+            branchP = "main";
+        }
+
+        return branchP;
     }
 
     private static void RunGitCommands(string[] commands)
