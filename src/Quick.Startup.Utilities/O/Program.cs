@@ -31,15 +31,21 @@ class Program
         }
         if (args[0].Equals("g", StringComparison.OrdinalIgnoreCase))
         {
-            var gitUtility = new GitExtentionUtility();
+            var utility = new GitExtentionUtility();
             // Pass all arguments after "g" to the utility
-            gitUtility.Run(args.Skip(1).ToArray());
+            utility.Run(args.Skip(1).ToArray());
             return;
         }
         if (args[0].Equals("gitb", StringComparison.OrdinalIgnoreCase))
         {
-            var gitBashUtility = new GitBashUtility();
-            gitBashUtility.Run(args.Skip(1).ToArray(), profile.GetRepoMappings());
+            var utility = new GitBashUtility();
+            utility.Run(args.Skip(1).ToArray(), profile.GetRepoMappings());
+            return;
+        }
+        if (args[0].Equals("start", StringComparison.OrdinalIgnoreCase))
+        {
+            var utility = new ApplicationStarterUtility();
+            utility.Run(args.Skip(1).ToArray());
             return;
         }
     }

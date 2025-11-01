@@ -10,9 +10,9 @@ public enum PowerShellMode
 
 public class PowerShellExecutor
 {
-    public void RunPowerShellCommandAsAdmin(string command, PowerShellMode mode)
+    public void RunPowerShellCommandAsAdmin(string command, PowerShellMode mode, ProcessWindowStyle windowStyle = ProcessWindowStyle.Normal)
     {
-        string noExitArg = mode == PowerShellMode.LeaveOpen ? "-NoExit " : "";
+        string noExitArg = mode == PowerShellMode.CloseInTheEnd ? "" : "-NoExit ";
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
             FileName = "powershell.exe",
@@ -20,12 +20,21 @@ public class PowerShellExecutor
             UseShellExecute = true,
             CreateNoWindow = false,
             Verb = "runas",
-            WindowStyle = ProcessWindowStyle.Maximized
+            WindowStyle = windowStyle
         };
 
         try
         {
-            Process.Start(startInfo);
+            using (Process process = Process.Start(startInfo))
+            {
+                if (process != null)
+                {
+                    if (mode == PowerShellMode.CloseInTheEnd)
+                    {
+                        process.WaitForExit();
+                    }
+                }
+            }
         }
         catch (Exception ex)
         {
