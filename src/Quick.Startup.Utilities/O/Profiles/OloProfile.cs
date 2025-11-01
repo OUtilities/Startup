@@ -1,6 +1,33 @@
 ﻿using Common.Utils;
+using O.Extensions;
+using System.Diagnostics;
 
 namespace O.Profiles;
+#region CheatSheet
+
+// olo --help
+// olo build Admin
+// olo build Dashboard
+// olo build MenuAdmin
+// olo build MobileWeb
+// olo db sync
+// olo ff - Fast-forward cloned repositories registered in builder.json
+// olo aws localdev
+// olo consul update Local
+// dotnet tool update -g olo-builder
+
+// cd C:\code\platform\Admin\src
+// npm i
+// olo build Admin
+// cd C:\code\platform\Dashboard\src
+// npm i
+// olo build Dashboard
+// olo build MenuAdmin
+// olo build MobileWeb
+// cd C:\code\platform\CallCenter\src
+// npm i
+// olo build CallCenter
+#endregion
 
 public class OloProfile : IProfile
 {
@@ -44,44 +71,12 @@ public class OloProfile : IProfile
         RunBatFiles();
         RunPowershelCommands();
 
-        await Task.Delay(10 * 1000); // Wait some time to let commands finish
-        powerShellExecutor.RunPowerShellCommandAsAdmin("olo start", PowerShellMode.LeaveOpen);
-        // olo --help
-        // olo build Admin
-        // olo build Dashboard
-        // olo build MenuAdmin
-        // olo build MobileWeb
-        // olo db sync
-        // olo ff - Fast-forward cloned repositories registered in builder.json
-        // olo aws localdev
-        // olo consul update Local
-        // dotnet tool update -g olo-builder
-
-        // cd C:\code\platform\Admin\src
-        // npm i
-        // olo build Admin
-        // cd C:\code\platform\Dashboard\src
-        // npm i
-        // olo build Dashboard
-        // olo build MenuAdmin
-        // olo build MobileWeb
-        // cd C:\code\platform\CallCenter\src
-        // npm i
-        // olo build CallCenter
-    }
-
-    private void RunPowershelCommands()
-    {
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs serve", PowerShellMode.CloseInTheEnd);
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs olomenus", PowerShellMode.CloseInTheEnd);
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
-
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mapi", PowerShellMode.CloseInTheEnd);
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb mapi", PowerShellMode.CloseInTheEnd);
-
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs imageapi", PowerShellMode.CloseInTheEnd);
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb imageapi", PowerShellMode.CloseInTheEnd);
+        await Task.Delay(15 * 1000); // Wait some time to let commands finish
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo stop; Start-Sleep -Seconds 30", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo start; Start-Sleep -Seconds 30", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        var starter = new ApplicationStarterUtility();
+        starter.StartImageApi();
+        starter.StartMES();
     }
 
     private void RunBatFiles()
@@ -90,8 +85,23 @@ public class OloProfile : IProfile
         batFileExecutor.Run("Telegram.bat");
         batFileExecutor.Run("Zoom.bat");
         batFileExecutor.Run("NotepadPlusPlus.bat");
-        batFileExecutor.Run("Postman.bat");
-        //batFileExecutor.Run("PowerShell.bat", runAsAdmin: true);
+        //batFileExecutor.Run("Postman.bat");
+        batFileExecutor.Run("PowerShell.bat", runAsAdmin: true);
         batFileExecutor.Run("Gemini.bat");
+    }
+
+    private void RunPowershelCommands()
+    {
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs serve", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs olomenus", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mes", PowerShellMode.CloseInTheEnd);
+
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb mapi", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mapi", PowerShellMode.CloseInTheEnd);
+
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb imageapi", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs imageapi", PowerShellMode.CloseInTheEnd);
     }
 }
