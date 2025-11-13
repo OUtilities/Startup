@@ -10,7 +10,7 @@ internal class ApplicationStarterUtility
     {
         if (args.Length == 0)
         {
-            StartMES();
+            StartMES(startDockerPostgresDatabase: true);
             StartImageApi();
             return;
         }
@@ -18,7 +18,7 @@ internal class ApplicationStarterUtility
         switch (application)
         {
             case "mes":
-                StartMES();
+                StartMES(startDockerPostgresDatabase: false);
                 break;
             case "imageapi":
                 StartImageApi();
@@ -30,11 +30,15 @@ internal class ApplicationStarterUtility
         }
     }
 
-    public void StartMES()
+    public void StartMES(bool startDockerPostgresDatabase)
     {
-        powerShellExecutor.RunPowerShellCommandAsAdmin(@"cd C:\code\platform\Olo.Menus.Export; .\Docker.ps1 LocalDev start", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        if (startDockerPostgresDatabase)
+        {
+            powerShellExecutor.RunPowerShellCommandAsAdmin(@"cd C:\code\platform\Olo.Menus.Export; .\Docker.ps1 LocalDev start", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        }
 
         powerShellExecutor.RunPowerShellCommandAsAdmin(@"dotnet run --project C:\code\platform\Olo.Menus.Export\src\Olo.Menus.Export.SupportService\Olo.Menus.Export.SupportService.csproj --launch-profile Olo.Menus.Export.SupportService", PowerShellMode.LeaveOpen);
+        Thread.Sleep(90 * 1000); // Give some time for SupportService to start before starting Worker
         powerShellExecutor.RunPowerShellCommandAsAdmin(@"dotnet run --project C:\code\platform\Olo.Menus.Export\src\Olo.Menus.Export.Worker\Olo.Menus.Export.Worker.csproj --launch-profile Olo.Menus.Export.Worker", PowerShellMode.LeaveOpen);
     }
 
