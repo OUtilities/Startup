@@ -68,15 +68,18 @@ public class OloProfile : IProfile
 
     public async Task Startup()
     {
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("start chrome https://olo.login.duosecurity.com/central/?open_default_apps=true", PowerShellMode.CloseInTheEnd);
+        //return;
         RunBatFiles();
         RunPowershelCommands();
 
         await Task.Delay(15 * 1000); // Wait some time to let commands finish
         powerShellExecutor.RunPowerShellCommandAsAdmin("olo stop; Start-Sleep -Seconds 30", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
         powerShellExecutor.RunPowerShellCommandAsAdmin("olo start; Start-Sleep -Seconds 30", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+
         var starter = new ApplicationStarterUtility();
-        starter.StartImageApi();
-        starter.StartMES();
+        //starter.StartImageApi();
+        //starter.StartMES(startDockerPostgresDatabase: true);
     }
 
     private void RunBatFiles()
@@ -92,16 +95,18 @@ public class OloProfile : IProfile
 
     private void RunPowershelCommands()
     {
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs serve", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs olomenus", PowerShellMode.CloseInTheEnd);
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mes", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mes", PowerShellMode.CloseInTheEnd);
 
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb mapi", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mapi", PowerShellMode.CloseInTheEnd);
 
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb imageapi", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs imageapi", PowerShellMode.CloseInTheEnd);
+
+        powerShellExecutor.RunPowerShellCommandAsAdmin("start chrome https://olo.login.duosecurity.com/central/", PowerShellMode.CloseInTheEnd);
     }
 }
