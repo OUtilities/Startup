@@ -4,38 +4,38 @@ namespace O.Extensions;
 
 public class VsCodeUtility
 {
-    public void Run(string[] args, Dictionary<string, string> solutionMappings)
+    public void Run(string[] args, Dictionary<string, string> folderMappings)
     {
         if (args.Length == 0)
         {
             Console.WriteLine("Usage: o vsc <command>");
-            Console.WriteLine("Available commands: " + string.Join(", ", solutionMappings.Keys));
+            Console.WriteLine("Available commands: " + string.Join(", ", folderMappings.Keys));
             return;
         }
 
         string command = args[0];
 
-        if (solutionMappings.TryGetValue(command, out var solutionPath))
+        if (folderMappings.TryGetValue(command, out var folderPath))
         {
-            if (!File.Exists(solutionPath) && !Directory.Exists(solutionPath))
+            if (!File.Exists(folderPath) && !Directory.Exists(folderPath))
             {
-                Console.WriteLine($"The path '{solutionPath}' does not exist.");
+                Console.WriteLine($"The path '{folderPath}' does not exist.");
                 return;
             }
 
-            OpenSolutionInVsCode(solutionPath);
+            OpenFolderInVsCode(folderPath);
         }
         else
         {
             Console.WriteLine($"Unknown command: {command}");
-            Console.WriteLine("Available commands: " + string.Join(", ", solutionMappings.Keys));
+            Console.WriteLine("Available commands: " + string.Join(", ", folderMappings.Keys));
         }
     }
 
-    private static void OpenSolutionInVsCode(string solutionPath)
+    private static void OpenFolderInVsCode(string solutionPath)
     {
         // Try to find VS Code executable in PATH
-        string codeExe = "code";
+        string codeExe = @"""C:\Users\oleg.lazarovych\AppData\Local\Programs\Microsoft VS Code\Code.exe""";
 
         var psi = new ProcessStartInfo
         {

@@ -5,5 +5,6 @@
         Task Startup();
         Dictionary<string, string> GetRepoMappings();
         Dictionary<string, string> GetVsSolutionMappings();
+        Dictionary<string, string> GetVsCodeFoldersMappings();
     }
 }
