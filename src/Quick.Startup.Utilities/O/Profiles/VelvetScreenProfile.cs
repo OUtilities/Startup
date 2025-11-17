@@ -4,6 +4,10 @@ namespace O.Profiles;
 
 public class VelvetScreenProfile : IProfile
 {
+
+    private BatFileExecutor batFileExecutor = new BatFileExecutor();
+    private PowerShellExecutor powerShellExecutor = new PowerShellExecutor();
+
     public Dictionary<string, string> GetRepoMappings()
     {
         return new()
@@ -25,9 +29,6 @@ public class VelvetScreenProfile : IProfile
                 { "vapi", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
             };
     }
-
-    private BatFileExecutor batFileExecutor = new BatFileExecutor();
-    private PowerShellExecutor powerShellExecutor = new PowerShellExecutor();
     public async Task Startup()
     {
         RunBatFiles();
@@ -35,6 +36,11 @@ public class VelvetScreenProfile : IProfile
 
         //await Task.Delay(10 * 1000); // Wait some time to let commands finish
         //powerShellExecutor.RunPowerShellCommandAsAdmin("olo start", PowerShellMode.LeaveOpen);
+    }
+
+    public Dictionary<string, string> GetVsCodeFoldersMappings()
+    {
+        throw new NotImplementedException();
     }
 
     private void RunPowershelCommands()

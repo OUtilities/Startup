@@ -25,8 +25,14 @@ class Program
         }
         if (args[0].Equals("vs", StringComparison.OrdinalIgnoreCase))
         {
-            var vsUtility = new Vs2022Utility();
-            vsUtility.Run(args.Skip(1).ToArray(), profile.GetVsSolutionMappings());
+            var utility = new Vs2022Utility();
+            utility.Run(args.Skip(1).ToArray(), profile.GetVsSolutionMappings());
+            return;
+        }
+        if (args[0].Equals("vsc", StringComparison.OrdinalIgnoreCase))
+        {
+            var utility = new VsCodeUtility();
+            utility.Run(args.Skip(1).ToArray(), profile.GetVsCodeFoldersMappings());
             return;
         }
         if (args[0].Equals("g", StringComparison.OrdinalIgnoreCase))
