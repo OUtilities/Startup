@@ -17,11 +17,12 @@
 
     // 1. CONFIGURATION: Add all the application names you want to auto-select here.
     const TARGET_APPLICATIONS = [
-        'Datadog', // Priority 1: Finds DataDog, Datadog, DATADOG, etc.
-        'TeamCity (VPN Only)', // Priority 2: Add other apps here
-        'Sumo Logic - Olo', // Priority 2: Add other apps here
-        'Raygun', // Priority 2: Add other apps here
-        'Octopus' // Priority 3: Add other apps here
+        'GitHub',
+        'TeamCity (VPN Only)',
+        'Sumo Logic - Olo',
+        'Raygun',
+        'Datadog',
+        'Octopus'
     ];
 
     /**

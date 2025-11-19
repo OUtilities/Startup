@@ -42,6 +42,10 @@ public class OloProfile : IProfile
                 { "platform", @"C:\code\platform" },
                 { "mapi", @"C:\code\menu-api" },
                 { "imageapi", @"C:\code\image-api" },
+
+                { "oct", @"C:\code\octopus-configurations" },
+                { "tss", @"C:\code\terraform-state-staging-environment" },
+                { "tsl", @"C:\code\terraform-state-live-environment" },
             };
     }
 
@@ -99,11 +103,11 @@ public class OloProfile : IProfile
 
     private async Task RunPowershelCommands()
     {
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs serve", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs olomenus", PowerShellMode.CloseInTheEnd);
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mes", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mes", PowerShellMode.CloseInTheEnd);
 
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb mapi", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mapi", PowerShellMode.CloseInTheEnd);
@@ -111,17 +115,22 @@ public class OloProfile : IProfile
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb imageapi", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs imageapi", PowerShellMode.CloseInTheEnd);
 
+        await Task.Delay(10 * 1000); // Wait some time to let commands finish
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb oct", PowerShellMode.CloseInTheEnd);
         powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc oct", PowerShellMode.CloseInTheEnd);
-        await Task.Delay(5 * 1000); // Wait some time to let commands finish
+        await Task.Delay(10 * 1000); // Wait some time to let commands finish
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb tss", PowerShellMode.CloseInTheEnd);
         powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc tss", PowerShellMode.CloseInTheEnd);
-        await Task.Delay(5 * 1000); // Wait some time to let commands finish
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc tsl", PowerShellMode.CloseInTheEnd);
-        await Task.Delay(5 * 1000); // Wait some time to let commands finish
+        await Task.Delay(10 * 1000); // Wait some time to let commands finish
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb tsl", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc tsl", PowerShellMode.CloseInTheEnd);
+        //await Task.Delay(10 * 1000); // Wait some time to let commands finish
 
-        powerShellExecutor.RunPowerShellCommandAsAdmin("start chrome https://olo.login.duosecurity.com/central/", PowerShellMode.CloseInTheEnd);
 
         await Task.Delay(15 * 1000); // Wait some time to let commands finish
         powerShellExecutor.RunPowerShellCommandAsAdmin("olo stop; Start-Sleep -Seconds 30", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
         powerShellExecutor.RunPowerShellCommandAsAdmin("olo start; Start-Sleep -Seconds 30", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+
+        powerShellExecutor.RunPowerShellCommandAsAdmin("start chrome https://olo.login.duosecurity.com/central/", PowerShellMode.CloseInTheEnd);
     }
 }
