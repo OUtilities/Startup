@@ -45,6 +45,7 @@ internal class ApplicationStarterUtility
     public void StartImageApi()
     {
         powerShellExecutor.RunPowerShellCommandAsAdmin(@"dotnet run --project C:\code\image-api\ImageApi.MockImgix\ImageApi.MockImgix.csproj --launch-profile ImageApi.MockImgix", PowerShellMode.LeaveOpen);
+        Thread.Sleep(10 * 1000); // Give some time for MockImgix to start before starting ImageApi
         powerShellExecutor.RunPowerShellCommandAsAdmin(@"dotnet run --project C:\code\image-api\src\ImageApi.fsproj --launch-profile ImageApi", PowerShellMode.LeaveOpen);
     }
 }
