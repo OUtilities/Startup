@@ -1,20 +1,11 @@
 ﻿using Common.Utils;
 using O.Extensions;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.Sockets;
-using System.Threading;
-using static System.Formats.Asn1.AsnWriter;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace O.Profiles;
 #region CheatSheet
 
 // olo --help
-// olo build Admin
-// olo build Dashboard
-// olo build MenuAdmin
-// olo build MobileWeb
 // olo config
 // olo ff - Fast-forward cloned repositories registered in builder.json
 // olo db sync
@@ -61,11 +52,14 @@ namespace O.Profiles;
 
 // docker system prune -af --volumes
 // docker builder prune -af
-
+// CLEANUP DOCKER: WizTree to show what is taking space on disk,
+// PRESS on Docker Desktop Question Mark(?) then "Clean / Purge data" then choose WSL 2
 // npm cache clean --force
 // yarn cache clean --all --mirror
 // nuget locals all -clear
 // dotnet nuget locals --clear all
+
+// SystemPropertiesAdvanced - windows swap files settings
 #endregion
 
 public class OloProfile : IProfile
@@ -79,11 +73,9 @@ public class OloProfile : IProfile
         return new()
             {
                 { "utils", @"C:\_PetProjects\OUtilities\Startup" },
-
                 { "platform", @"C:\code\platform" },
                 { "mapi", @"C:\code\menu-api" },
                 { "imageapi", @"C:\code\image-api" },
-
                 { "oct", @"C:\code\octopus-configurations" },
                 { "tss", @"C:\code\terraform-state-staging-environment" },
                 { "tsl", @"C:\code\terraform-state-live-environment" },
@@ -97,20 +89,22 @@ public class OloProfile : IProfile
     {
         return new()
             {
-            
                 { "utils", @"C:\_PetProjects\OUtilities\Startup\src\Quick.Startup.Utilities\Quick.Startup.Utilities.sln" },
-
                 { "serve", @"C:\code\platform\MobileWeb\MobileWeb.sln" },
                 { "admin", @"C:\code\platform\Admin\Admin.sln" },
                 { "menu", @"C:\code\platform\Olo.Menus\Olo.Menus.sln" },
                 { "menulogic", @"C:\code\platform\MenuLogic\Mobo.MenuLogic.sln" },
                 { "menuadmin", @"C:\code\platform\MenuAdmin\MenuAdmin.sln" },
                 { "dashboard", @"C:\code\platform\Dashboard\Dashboard.sln" },
+                { "orderingapi", @"C:\code\platform\PlatformAPI\1.1\PlatformApiV1.1.sln" },
+                { "reportService", @"C:\code\platform\ReportService\ReportService.sln" },
                 { "mobologic", @"C:\code\platform\MoboLogic\MoboLogic.sln" },
+                { "cloud86", @"C:\code\platform\CloudEightySixingService\CloudEightySixingService.sln" },
+                { "mi86", @"C:\code\platform\MenuIntegration\MenuIntegration.sln" },
                 { "mes", @"C:\code\platform\Olo.Menus.Export\Olo.Menus.Export.sln" },
                 { "mis", @"C:\code\platform\Olo.Menus.Import\Olo.Menus.Import.sln" },
                 { "elastic", @"C:\code\platform\MenuSearchIndexingService\MenuSearchIndexingService.sln" },
-
+                { "omnivoreApi", @"C:\code\omnivore-api-clients\Olo.Omnivore.ApiClients.sln" },
                 { "imageapi", @"C:\code\image-api\ImageApi.sln" },
                 { "mapi", @"C:\code\menu-api\Olo.Menus.Api.sln" },
             };
@@ -129,81 +123,77 @@ public class OloProfile : IProfile
                 { "config", @"C:\code\configuration" },
                 { "imageapi", @"C:\code\image-api" },
                 { "platform", @"C:\code\platform" },
+                { "reportService", @"C:\code\platform\ReportService" },
             };
     }
 
     public async Task Startup()
     {
-        OpenPrograms();
-        await OloStop();
-        powerShellExecutor.RunPowerShellCommandAsAdmin("olo ff; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
-        powerShellExecutor.RunPowerShellCommandAsAdmin("olo db sync; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
-        powerShellExecutor.RunPowerShellCommandAsAdmin("olo db sync --databases ImageApi; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
-        await OloStart(); 
+        await OpenPrograms();
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo ff; Start-Sleep -Seconds 5", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo db sync; Start-Sleep -Seconds 5", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo db sync --databases ImageApi; Start-Sleep -Seconds 5", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo build Admin; Start-Sleep -Seconds 5", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo build Dashboard; Start-Sleep -Seconds 5", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("olo build MenuAdmin; Start-Sleep -Seconds 5", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        await OpenIDEs();
+        powerShellExecutor.RunPowerShellCommandAsAdmin("start chrome https://olo.login.duosecurity.com/central/", PowerShellMode.CloseInTheEnd);
+        //await OloStart();
         //starter.StartImageApi();
         //starter.StartMES(startDockerPostgresDatabase: true);
-        await OpenIDEs();
-        await Task.Delay(10 * 1000); // Wait some time to let commands finish
-        powerShellExecutor.RunPowerShellCommandAsAdmin("start chrome https://olo.login.duosecurity.com/central/", PowerShellMode.CloseInTheEnd);
     }
 
-    private void OpenPrograms()
+    private async Task OpenPrograms()
     {
         batFileExecutor.Run("Chrome.bat");
         batFileExecutor.Run("Telegram.bat");
         batFileExecutor.Run("Zoom.bat");
         batFileExecutor.Run("NotepadPlusPlus.bat");
-        //batFileExecutor.Run("Postman.bat");
+        batFileExecutor.Run("Postman.bat");
         batFileExecutor.Run("PowerShell.bat", runAsAdmin: true);
         batFileExecutor.Run("Gemini.bat");
+        await Task.Delay(10 * 1000); // Wait some time to let commands finish
     }
 
     private async Task OpenIDEs()
     {
         powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
-        await Task.Delay(10 * 1000); // Wait some time to let commands finish
         powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc platform", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs serve", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs olomenus", PowerShellMode.CloseInTheEnd);
-        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mes", PowerShellMode.CloseInTheEnd);
-        //await Task.Delay(10 * 1000); // Wait some time to let commands finish
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs dashboard", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs orderingapi", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs reportService", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc reportService", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mes", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc mes", PowerShellMode.CloseInTheEnd);
-
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs cloud86", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mi86", PowerShellMode.CloseInTheEnd);
+        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs omnivoreApi", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb mapi", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs mapi", PowerShellMode.CloseInTheEnd);
-
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb imageapi", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs imageapi", PowerShellMode.CloseInTheEnd);
-        //await Task.Delay(10 * 1000); // Wait some time to let commands finish
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc imageapi", PowerShellMode.CloseInTheEnd);
-
-        //await Task.Delay(10 * 1000); // Wait some time to let commands finish
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb oct", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc oct", PowerShellMode.CloseInTheEnd);
-        //await Task.Delay(10 * 1000); // Wait some time to let commands finish
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb tss", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc tss", PowerShellMode.CloseInTheEnd);
-        //await Task.Delay(10 * 1000); // Wait some time to let commands finish
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb tsl", PowerShellMode.CloseInTheEnd);
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc tsl", PowerShellMode.CloseInTheEnd);
-
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb config", PowerShellMode.CloseInTheEnd);
-        //await Task.Delay(10 * 1000); // Wait some time to let commands finish
         //powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc config", PowerShellMode.CloseInTheEnd);
-    }
 
-    private async Task OloStop()
-    {
-        await Task.Delay(10 * 1000); // Wait some time to let commands finish
-        powerShellExecutor.RunPowerShellCommandAsAdmin("olo stop; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        await Task.Delay(30 * 1000); // Wait some time to let commands finish
     }
 
     private async Task OloStart()
     {
-        await Task.Delay(10 * 1000); // Wait some time to let commands finish
         powerShellExecutor.RunPowerShellCommandAsAdmin("olo stop; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("docker system prune -f; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
         powerShellExecutor.RunPowerShellCommandAsAdmin("olo start; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
         powerShellExecutor.RunPowerShellCommandAsAdmin("docker stop localstack-kafkaui-1; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("docker volume prune -f; Start-Sleep -Seconds 10", PowerShellMode.CloseInTheEnd, ProcessWindowStyle.Maximized);
     }
 }
