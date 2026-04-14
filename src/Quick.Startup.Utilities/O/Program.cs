@@ -6,7 +6,7 @@ using O.Profiles;
 
 class Program
 {
-    private static readonly IProfile profile = new OloProfile();
+    private static readonly IProfile profile = new PilloProfile();
 
     static void Main(string[] args)
     {
