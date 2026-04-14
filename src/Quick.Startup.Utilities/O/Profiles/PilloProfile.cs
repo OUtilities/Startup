@@ -2,7 +2,7 @@
 
 namespace O.Profiles;
 
-public class VelvetScreenProfile : IProfile
+public class PilloProfile : IProfile
 {
 
     private BatFileExecutor batFileExecutor = new BatFileExecutor();
@@ -13,9 +13,7 @@ public class VelvetScreenProfile : IProfile
         return new()
             {
                 { "utils", @"C:\_PetProjects\OUtilities\Startup" },
-
-                { "vui", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
-                { "vapi", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
+                { "papi", @"C:\_PetProjects\PilloOrganization\MonolithApi" }
             };
     }
 
@@ -25,8 +23,7 @@ public class VelvetScreenProfile : IProfile
             {
                 { "utils", @"C:\_PetProjects\OUtilities\Startup\src\Quick.Startup.Utilities\Quick.Startup.Utilities.sln" },
 
-                { "vui", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
-                { "vapi", @"C:\_PetProjects\VelvetScreen\angular-monolith-ui" },
+                { "papi", @"C:\_PetProjects\PilloOrganization\MonolithApi\Api\src\Api.sln" }
             };
     }
     public async Task Startup()
@@ -42,8 +39,9 @@ public class VelvetScreenProfile : IProfile
 
     private void RunPowershelCommands()
     {
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs elastic", PowerShellMode.CloseInTheEnd);
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb platform", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs papi", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb papi", PowerShellMode.CloseInTheEnd);
+
     }
 
     private void RunBatFiles()
