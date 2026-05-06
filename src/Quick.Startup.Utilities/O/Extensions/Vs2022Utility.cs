@@ -34,26 +34,26 @@ public class Vs2022Utility
 
     private static void OpenSolutionInVisualStudio(string solutionPath)
     {
-        // Try to find the default VS2022 path
+        // Try to find the default VS2026 path
         string vsPath = Environment.ExpandEnvironmentVariables(
-            @"%ProgramFiles%\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe");
+            @"%ProgramFiles%\Microsoft Visual Studio\18\Community\Common7\IDE\devenv.exe");
 
         if (!File.Exists(vsPath))
         {
             // Try Professional
             vsPath = Environment.ExpandEnvironmentVariables(
-                @"%ProgramFiles%\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.exe");
+                @"%ProgramFiles%\Microsoft Visual Studio\18\Professional\Common7\IDE\devenv.exe");
         }
         if (!File.Exists(vsPath))
         {
             // Try Enterprise
             vsPath = Environment.ExpandEnvironmentVariables(
-                @"%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe");
+                @"%ProgramFiles%\Microsoft Visual Studio\18\Enterprise\Common7\IDE\devenv.exe");
         }
 
         if (!File.Exists(vsPath))
         {
-            Console.WriteLine("Visual Studio 2022 not found. Please ensure it is installed.");
+            Console.WriteLine("Visual Studio 2026 not found. Please ensure it is installed.");
             return;
         }
 

@@ -34,12 +34,12 @@ public class VsCodeUtility
 
     private static void OpenFolderInVsCode(string solutionPath)
     {
-        // Try to find VS Code executable in PATH
-        string codeExe = @"""C:\Users\oleg.lazarovych\AppData\Local\Programs\Microsoft VS Code\Code.exe""";
+        string rawPath = @"%LocalAppData%\Programs\Microsoft VS Code\Code.exe";
+        string expandedPath = Environment.ExpandEnvironmentVariables(rawPath);
 
         var psi = new ProcessStartInfo
         {
-            FileName = codeExe,
+            FileName = expandedPath,
             Arguments = $"\"{solutionPath}\"",
             UseShellExecute = false
         };
