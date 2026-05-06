@@ -10,6 +10,7 @@ class Program
 
     static void Main(string[] args)
     {
+        //args = "vsc ui".Split(' ');
         if (args.Length == 0)
         {
             // Add other command handling or default behavior here
