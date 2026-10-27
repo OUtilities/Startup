@@ -56,7 +56,7 @@ public class PilloProfile : IProfile
         batFileExecutor.Run("Chrome.bat");
         batFileExecutor.Run("Telegram.bat");
         //batFileExecutor.Run("NotepadPlusPlus.bat");
-        //batFileExecutor.Run("Postman.bat");
+        batFileExecutor.Run("Postman.bat");
         batFileExecutor.Run("PowerShell.bat", runAsAdmin: true);
     }
 }
