@@ -3,14 +3,16 @@
 using BlackScreen;
 using O.Extensions;
 using O.Profiles;
+using O.Profiles.EpicFlooring;
 
-class Program
+public class Program
 {
-    private static readonly IProfile profile = new PilloProfile();
+    //public static readonly IProfile Profile = new EpicFlooringProfile();
+    public static readonly IProfile Profile = new PilloProfile();
 
     static void Main(string[] args)
     {
-        //args = "vsc ui".Split(' ');
+        //args = "ssms".Split(' ');
         if (args.Length == 0)
         {
             // Add other command handling or default behavior here
@@ -27,13 +29,19 @@ class Program
         if (args[0].Equals("vs", StringComparison.OrdinalIgnoreCase))
         {
             var utility = new Vs2022Utility();
-            utility.Run(args.Skip(1).ToArray(), profile.GetVsSolutionMappings());
+            utility.Run(args.Skip(1).ToArray(), Profile.GetVsSolutionMappings());
             return;
         }
         if (args[0].Equals("vsc", StringComparison.OrdinalIgnoreCase))
         {
             var utility = new VsCodeUtility();
-            utility.Run(args.Skip(1).ToArray(), profile.GetVsCodeFoldersMappings());
+            utility.Run(args.Skip(1).ToArray(), Profile.GetVsCodeFoldersMappings());
+            return;
+        }
+        if (args[0].Equals("ssms", StringComparison.OrdinalIgnoreCase))
+        {
+            var utility = new SsmsUtility();
+            utility.Run();
             return;
         }
         if (args[0].Equals("g", StringComparison.OrdinalIgnoreCase))
@@ -46,7 +54,7 @@ class Program
         if (args[0].Equals("gitb", StringComparison.OrdinalIgnoreCase))
         {
             var utility = new GitBashUtility();
-            utility.Run(args.Skip(1).ToArray(), profile.GetRepoMappings());
+            utility.Run(args.Skip(1).ToArray(), Profile.GetRepoMappings());
             return;
         }
         if (args[0].Equals("start", StringComparison.OrdinalIgnoreCase))

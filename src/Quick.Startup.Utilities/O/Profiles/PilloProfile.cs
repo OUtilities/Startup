@@ -4,7 +4,6 @@ namespace O.Profiles;
 
 public class PilloProfile : IProfile
 {
-
     private BatFileExecutor batFileExecutor = new BatFileExecutor();
     private PowerShellExecutor powerShellExecutor = new PowerShellExecutor();
 
@@ -28,7 +27,7 @@ public class PilloProfile : IProfile
     }
     public async Task Startup()
     {
-        //RunBatFiles();
+        RunBatFiles();
         RunPowershelCommands();
     }
 
@@ -36,15 +35,19 @@ public class PilloProfile : IProfile
     {
         return new()
             {
-                { "ui", @"C:\_PetProjects\PilloOrganization\MobileApp-ReactNative\src\app" }
+                { "ui", @"C:\_PetProjects\PilloOrganization\MobileApp-ReactNative\src\mobile-expo-app" },
+                { "infra", @"C:\_PetProjects\PilloOrganization\LocalInfrastructure" }
             };
     }
 
     private void RunPowershelCommands()
     {
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o vs papi", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o vs papi", PowerShellMode.CloseInTheEnd);
         powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc ui", PowerShellMode.CloseInTheEnd);
-        //powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb papi", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o vsc infra", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb papi", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o gitb ui", PowerShellMode.CloseInTheEnd);
+        powerShellExecutor.RunPowerShellCommandAsAdmin("o ssms", PowerShellMode.CloseInTheEnd);
 
     }
 
@@ -54,8 +57,7 @@ public class PilloProfile : IProfile
         batFileExecutor.Run("Telegram.bat");
         //batFileExecutor.Run("NotepadPlusPlus.bat");
         //batFileExecutor.Run("Postman.bat");
-        //batFileExecutor.Run("Gemini.bat");
-        //batFileExecutor.Run("PowerShell.bat", runAsAdmin: true);
+        batFileExecutor.Run("PowerShell.bat", runAsAdmin: true);
     }
 }
 
