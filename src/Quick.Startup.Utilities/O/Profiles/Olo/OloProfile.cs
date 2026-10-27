@@ -2,7 +2,7 @@
 using O.Extensions;
 using System.Diagnostics;
 
-namespace O.Profiles;
+namespace O.Profiles.Olo;
 #region CheatSheet
 
 // olo --help

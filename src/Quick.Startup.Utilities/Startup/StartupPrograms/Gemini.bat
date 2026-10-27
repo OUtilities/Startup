@@ -1,1 +1,0 @@
-start "" "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Web Applications\_crx_comeanejmchffgbbjpiibemecndpiijh\Google Gemini.lnk"
